@@ -1,0 +1,55 @@
+
+
+
+/* BUTTONS */
+
+.btn-orange {
+    background-color: var(--orange)!important;
+    color: var(--light)!important;
+}
+
+.btn-orange:hover{
+    background-color: var(--orange)!important;
+    color: var(--light)!important;
+    opacity: 0.8!important;
+}
+
+.btn-outline-orange {
+    background-color: var(--light)!important;
+    color: var(--orange)!important;
+    border-color: var(--orange)!important;
+    
+}
+
+.btn-outline-orange:hover{
+    background-color: white;
+    color: var(--orange)!important;
+    opacity: 0.8!important;
+    border-color: var(--orange)!important;
+}
+
+
+.btn-lightOrange {
+    background-color: var(--orangeLight)!important;
+    color: var(--light)!important;
+}
+
+.btn-lightOrange:hover{
+    background-color: var(--orangeLight)!important;
+    color: var(--light)!important;
+    opacity: 0.8!important;
+}
+
+.btn-outline-lightOrange {
+    background-color: var(--light)!important;
+    color: var(--orangeLight)!important;
+    border-color: var(--orangeLight)!important;
+    
+}
+
+.btn-outline-lightOrange:hover{
+    background-color: var(--light)!important;
+    color: var(--orangeLight)!important;
+    opacity: 0.8!important;
+    border-color: var(--orangeLight)!important;
+}
