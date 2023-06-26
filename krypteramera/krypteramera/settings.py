@@ -123,8 +123,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 # Development settings
-# STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 
 # Live setiings
-STATIC_URL = '/home/abbehjelm/Sommarkurs-KAU/static'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATIC_URL = '/home/abbehjelm/Sommarkurs-KAU/static'
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
