@@ -126,5 +126,4 @@ USE_TZ = True
 # STATIC_URL = '/static/'
 
 # Live setiings
-STATIC_URL = '/home/abbehjelm/Sommarkurs-KAU/static'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
