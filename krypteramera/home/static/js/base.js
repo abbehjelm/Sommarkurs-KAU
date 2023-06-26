@@ -14,6 +14,17 @@ $(document).ready(function () {
         this.classList.toggle('bi-eye');
     });
 
+    $('body').on('click', '#togglePasswordDecrypt', function () {
+        console.log('clicked')
+        const password = document.querySelector('#encryptionkeyDecrypt');
+        const type = password
+            .getAttribute('type') === 'password' ?
+            'text' : 'password';
+        password.setAttribute('type', type);
+        // Toggle the eye and bi-eye icon
+        this.classList.toggle('bi-eye');
+    });
+
 
 
 

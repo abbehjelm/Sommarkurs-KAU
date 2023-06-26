@@ -37,21 +37,14 @@
                 </div>
 
             </div>
-            <div class="row-12 justify-content-end d-flex mt-3">
-                <small><a id="initVectorInfoModalLink" href="#" class="text-info">Vad är en startvektor?</a></small>
-            </div>
-            <div class="row d-flex ">
-                <div class="col-12">
-                    {{encryptionForm.iv }}                    
-                </div>
-
-            </div>
             <div class="row d-flex ">
                 <div class="col-12 col-lg-6 mt-3">
 
                     {{encryptionForm.text }}
                 </div>
                 <div class="col-12 col-lg-6 mt-3 d-flex flex-column ">
+                     
+                                  
                     <div class="container-fluid rounded h-100 bg-white">
                         <div class="row d-flex justify-content-center ">
                             {% if cipher %}
@@ -65,13 +58,35 @@
                             </div>
                             {% else %}
                             <div class="col d-flex flex-column text-center justify-content-center">
-                                <small class="text-secondary">
+                                <small class="text-secondary pt-2">
                                     Chiffret kommer visas här
                                 </small>
                             </div>
                             {% endif %}
                         </div>
                     </div>
+                    <div class="row-12 justify-content-end d-flex mt-3">
+                        <small><a id="initVectorInfoModalLink" href="#" class="text-info">Vad är en startvektor?</a></small>
+                    </div>
+                    <div class="container-fluid rounded bg-white" >
+                        <div class="row d-flex justify-content-center ">
+                            <div class="col d-flex flex-column text-center justify-content-center"
+                                style="overflow-y: scroll;">
+
+
+                                <small class="text-secondary word-wrap text-break pt-2 pb-2">
+                                    {% if iv %}
+                                    {{ iv }}
+                                    {% else %}
+                                    Startvektor
+                                    {% endif %}
+                                    
+                                </small>
+                            </div>
+
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
 
@@ -92,15 +107,15 @@
                     {{decryptionForm.key }}
                     <a class="dummyLink" style="float: right;margin-right:30px;" href="#">
                         <i class="bi bi-eye-slash text-secondary" style="position:absolute; margin-top:-33px;"
-                            id="togglePassword"></i>
+                            id="togglePasswordDecrypt"></i>
                     </a>
                 </div>
 
             </div>
-          
+
             <div class="row d-flex mt-3">
                 <div class="col-12">
-                    {{decryptionForm.iv }}                    
+                    {{decryptionForm.iv }}
                 </div>
 
             </div>
@@ -124,7 +139,7 @@
                             {% else %}
                             <div class="col  d-flex flex-column text-center justify-content-center">
                                 <small class="text-secondary">
-                                    Texten kommer visas här
+                                    Det dechiffrerade meddelandet kommer att visas här
                                 </small>
                             </div>
                             {% endif %}
@@ -152,7 +167,7 @@
             </div>
             <div class="modal-body">
                 <small>
-                    Din krypteringsnyckel kan vara mellan 1 och 32 tecken lång. 
+                    Din krypteringsnyckel kan vara mellan 3 och 32 tecken lång.
                     <br>
                     <br>
                     Ju närmare 32 tecken som din nyckel är, ju säkrare och ju mer svårknäckt kommer krypteringen bli.
@@ -161,18 +176,19 @@
                     Vi rekommenderar en nyckel som är så nära 32 tecken som möjligt.
                     <br>
                     <br>
-                    Samma princip gäller för krypteringsnycklar som för lösenord: 
+                    Samma princip gäller för krypteringsnycklar som för lösenord:
                     <br>
                     <ul>
                         <li>
-                            Dela inte din krypteringsnyckel med någon som du inte vill ska kunna dekryptera det du krypterat!
+                            Dela inte din krypteringsnyckel med någon som du inte vill ska kunna dekryptera det du
+                            krypterat!
                         </li>
                         <li>
-                            Ju mer svårgissat din nyckel är, ju säkrare blir krypteringen.
+                            Ju mer svårgissad din nyckel är, ju säkrare blir krypteringen.
                         </li>
                     </ul>
-                                        
-                    
+
+
 
 
                 </small>
@@ -194,24 +210,25 @@
             </div>
             <div class="modal-body">
                 <small>
-                    Om ingen startvektor används minskar krypteringen säkerhet.
+                    En startvektor är en serie slumpmässiga tecken som genereras av Krypteramera automatiskt vid krypteringstillfället.
+                    <br>
+                    Startvektor behöver inte hållas hemlig men används för att öka krypteringens säkerhet.
+                    <br>
+                    Anledningen är att om samma text krypteras med samma krypteringsnyckel flera (gånger utan en slumpmässig startvektor) så kommer chiffret bli identiskt för varje gång.
+                    Om två meddelanded som båda börjar med ordet "Hej", men därefter är helt olika,
+                    krypteras med samma nyckel och utan startvektor så kommer båda chiffrens inledningar se likadana ut.
                     <br>
                     <br>
-                    Anledningen är att om samma text krypteras med samma nyckel så kommer chiffret bli identiskt.
-                    Om två meddelanded som båda börjar med ordet "Hej", men därefter är helt olika, 
-                    krypteras med samma nyckel och utan startvektor så kommer båda chiffrens inledningar se likadana ut. 
+                    Detta medför en risk då en analys av flera chiffer skulle kunna avslöja delar av
+                    ursprungsmeddelandena.
                     <br>
                     <br>
-                    Detta medför en risk då en analys av flera chiffer skulle kunna avslöja delar av ursprungsmeddelandena.      
-                    <br>
-                    <br>
-                    Om en startvektor anges och därefter aldrig återanvänds för samma nyckel försvinner den oven beskrivna svagheten. 
+                    Om en slumpmässigt genererad startvektor används och därefter aldrig återanvänds för samma nyckel försvinner den oven
+                    beskrivna svagheten.
                     <br>
                     <br>
                     Startvektorn behöver inte hållas hemlig, men behöver anges även vid dekrypteringstillfället.
-                    <br>
-                    <br>
-                    Vi rekommenderar att startvektorn är 16 tecken lång men accepterar kortare vektorer också.
+                    <br>                                        
                 </small>
             </div>
 
