@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ['abbehjelm.pythonanywhere.com', '*']
 
 INSTALLED_APPS = [
     'home',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

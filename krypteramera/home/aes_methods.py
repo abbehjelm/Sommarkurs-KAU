@@ -345,13 +345,27 @@ def divideMessageToByteArrayBlocks(message):
     
     byteArrayMessage = list(byteMessage)
     messageByteLength = len(byteArrayMessage)        
-    paddingNeeded = 16 - (messageByteLength % 16)    
+    paddingNeeded = 16 - (messageByteLength % 16)   
+    print("padding")
+    print(byteArrayMessage)
+    print(paddingNeeded)  
+    print(list(bytes(bytearray([paddingNeeded]))))  
+    
+    if paddingNeeded == 0:
+        for i in range(0,16):
+            byteArrayMessage += list(bytes(bytearray([16])))
+    else:
+        for i in range(0,paddingNeeded):
+            byteArrayMessage += list(bytes(bytearray([paddingNeeded])))
+    """
     padding = ""
     if paddingNeeded < 16:
         for pad in range(0,paddingNeeded):
             padding += " "
     padding = str.encode(padding)
     byteArrayMessage += list(padding)
+    """
+    print(byteArrayMessage)
     assert(len(byteArrayMessage) % 16 == 0)
     numberOfBlocks = int(len(byteArrayMessage) / 16)
     blocks = []
@@ -390,12 +404,20 @@ def reverseMatrixToChiper(matrixBlocks):
          
     return base64.b64encode(bytes(result)).decode()
 
-def reverseMatrixToChiperInverse(matrix):
-    matrixRows = getMatrixRows(matrix)
+def reverseMatrixToChiperInverse(matrix, isLastBlock):
+    matrixRows = getMatrixRows(matrix)  
+    print(isLastBlock)  
     result = ""
+    bytearray = []
     for i in range(0,4):
-        s = ''.join(map(chr, matrixRows[i]))  
+        bytearray += matrixRows[i]
+        
+        s = ''.join(map(chr, matrixRows[i]))         
         result = result + s
+    
+    if isLastBlock:
+        paddingLength = bytearray[-1]        
+        result = result[:-paddingLength]    
     return result
 
 
@@ -448,7 +470,6 @@ def shiftMatrixRowsReverse(matrix):
    
 
 def encrypt(key, message, iv):
-    
     keyMatrix = getFirstKeyMatrix(getBytesFromKey(key))   
     keyAsWords = getWordsFromKeyMatrix(keyMatrix)
     ivMatris = get4x4MatrixFromByteArray(list(iv))
@@ -516,6 +537,7 @@ def decrypt(key,cipher,iv):
     plainText = ""
     blockCount = 0
     cipherblocks = copy.deepcopy(matrixBlocks)
+    blocklength = len(matrixBlocks)
     for block in matrixBlocks:
         
        
@@ -534,9 +556,6 @@ def decrypt(key,cipher,iv):
         else:            
             XorKey(cipherblocks[blockCount-1], block)
         
-#        print(reverseMatrixToChiperInverse(block))
-        blockCount += 1
-        
-        plainText += reverseMatrixToChiperInverse(block) 
-    
+        blockCount += 1        
+        plainText += reverseMatrixToChiperInverse(block, blockCount == blocklength) 
     return plainText      
