@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import authentication, permissions
 import hashlib
@@ -36,9 +37,9 @@ class Encrypt(APIView):
                 'cipher' : cipher,
             }
             
-            return Response(jsonData)     
+            return JsonResponse(jsonData,safe=False)     
         
-        return Response({'error': "The data submitted was not in the correct format. Format should be { 'key' : 'Your chosen key', 'plainText' : 'The text you want to encrypt' } "})        
+        return JsonResponse({'error': "The data submitted was not in the correct format. Format should be { 'key' : 'Your chosen key', 'plainText' : 'The text you want to encrypt' } "},safe=False)        
     
     
 class Decrypt(APIView):    
@@ -67,9 +68,8 @@ class Decrypt(APIView):
                 
             jsonData = {
                 'plainText' : plainText
-            }
+            }                      
             
-            
-            return Response(jsonData)
+            return JsonResponse(jsonData,safe=False)
         else :
-            return Response({'error': "The data submitted was not in the correct format. Format should be  { 'key' : 'Your key',  'cipher' : 'The cipher you want to decrypt', 'iv' : 'The initialization vector generated upon encryption' }"})        
+            return JsonResponse({'error': "The data submitted was not in the correct format. Format should be  { 'key' : 'Your key',  'cipher' : 'The cipher you want to decrypt', 'iv' : 'The initialization vector generated upon encryption' }"},safe=False)        

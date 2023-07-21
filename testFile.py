@@ -3,8 +3,8 @@ import os
 import requests
 import base64
 
-encryption_url = "http://localhost:8000/api/encrypt/"
-decryption_url = "http://localhost:8000/api/decrypt/"
+encryption_url = "https://abbehjelm.pythonanywhere.com/api/encrypt/"
+decryption_url = "https://abbehjelm.pythonanywhere.com/api/decrypt/"
 
 
 def encrypt(key, iv, plain_text):
@@ -16,10 +16,10 @@ def encrypt(key, iv, plain_text):
     }        
 
     headers = {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json;charset=UTF-8",
     }
     
-    response = requests.post(encryption_url, json=post_data, headers=headers )
+    response = requests.post(encryption_url, json=post_data, headers=headers)
 
     response_json = json.loads(response.text)    
 
@@ -34,11 +34,10 @@ def decrypt(key, iv, cipher):
     }        
 
     headers = {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json;charset=UTF-8",
     }
     
     response = requests.post(decryption_url, json=post_data, headers=headers)
-
     response_json = json.loads(response.text)    
 
     return response_json
@@ -52,8 +51,7 @@ def main():
     return_dict = encrypt("albin", iv, "Hejsan svejsan på  dejsan sa hejsanä")
     print(return_dict)
     return_dict_2 = decrypt("albin",return_dict['iv'],return_dict['cipher'])
-    print(return_dict_2) 
-
+    print(return_dict_2)
 # __name__
 if __name__ == "__main__":
     main()

@@ -342,14 +342,9 @@ def expandKey(keyAsWords):
 
 def divideMessageToByteArrayBlocks(message):
     byteMessage = str.encode(message)
-    
-    byteArrayMessage = list(byteMessage)
+    byteArrayMessage = list(byteMessage)    
     messageByteLength = len(byteArrayMessage)        
     paddingNeeded = 16 - (messageByteLength % 16)   
-    print("padding")
-    print(byteArrayMessage)
-    print(paddingNeeded)  
-    print(list(bytes(bytearray([paddingNeeded]))))  
     
     if paddingNeeded == 0:
         for i in range(0,16):
@@ -357,15 +352,7 @@ def divideMessageToByteArrayBlocks(message):
     else:
         for i in range(0,paddingNeeded):
             byteArrayMessage += list(bytes(bytearray([paddingNeeded])))
-    """
-    padding = ""
-    if paddingNeeded < 16:
-        for pad in range(0,paddingNeeded):
-            padding += " "
-    padding = str.encode(padding)
-    byteArrayMessage += list(padding)
-    """
-    print(byteArrayMessage)
+   
     assert(len(byteArrayMessage) % 16 == 0)
     numberOfBlocks = int(len(byteArrayMessage) / 16)
     blocks = []
@@ -406,19 +393,23 @@ def reverseMatrixToChiper(matrixBlocks):
 
 def reverseMatrixToChiperInverse(matrix, isLastBlock):
     matrixRows = getMatrixRows(matrix)  
-    print(isLastBlock)  
     result = ""
     bytearray = []
     for i in range(0,4):
+        
         bytearray += matrixRows[i]
         
         s = ''.join(map(chr, matrixRows[i]))         
         result = result + s
     
+    result2 = bytearray
     if isLastBlock:
-        paddingLength = bytearray[-1]        
-        result = result[:-paddingLength]    
-    return result
+        paddingLength = bytearray[-1]       
+          
+        for i in range(0,int(paddingLength)):
+              result2.pop()
+   
+    return bytes(result2).decode("utf8")
 
 
 def shiftMatrixRows(matrix):
@@ -501,11 +492,9 @@ def encrypt(key, message, iv):
         
         previousBlock = block
         
-    for b in matrixBlocks:
-        print(b)    
+    
          
     cipher += reverseMatrixToChiper(matrixBlocks)     
-    
     
     return cipher
     
@@ -529,9 +518,7 @@ def decrypt(key,cipher,iv):
     for block in arrayBlocks:
         matrixBlocks.append(get4x4MatrixFromByteArray(block))
 
-    for b in matrixBlocks:
-        print(b)    
-
+    
     reversedRoundKeys = copy.deepcopy(roundKeys)
     reversedRoundKeys.reverse()
     plainText = ""
@@ -556,6 +543,7 @@ def decrypt(key,cipher,iv):
         else:            
             XorKey(cipherblocks[blockCount-1], block)
         
-        blockCount += 1        
-        plainText += reverseMatrixToChiperInverse(block, blockCount == blocklength) 
+        blockCount += 1 
+        text = reverseMatrixToChiperInverse(block, blockCount == blocklength)     
+        plainText += text
     return plainText      
